@@ -18,7 +18,8 @@ from bs4 import BeautifulSoup
 
 # CONFIG
 URL = "https://in.bookmyshow.com/sports/icc-men-s-t20-world-cup-2026-semi-final-1-kolkata/ET00483392"
-CHECK_INTERVAL_MINUTES = int(os.environ.get("CHECK_INTERVAL_MINUTES", 5))  # default 5 min
+CHECK_INTERVAL_MINUTES = 1
+
 # Keep keywords lowercase for reliable matching
 AVAILABLE_KEYWORDS = [k.lower() for k in [
     "book tickets", "book now", "buy tickets", "proceed", "select seats",
