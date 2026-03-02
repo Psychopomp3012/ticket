@@ -2,3 +2,4 @@ selenium
 webdriver-manager
 beautifulsoup4
 plyer  # optional, but won't work on server — remove or ignore
+flask

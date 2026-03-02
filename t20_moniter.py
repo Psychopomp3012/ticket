@@ -81,3 +81,21 @@ while True:
     if found:
         print("Alert triggered! Check Render logs or add notifications.")
     time.sleep(CHECK_INTERVAL_MINUTES * 60)
+    
+    
+    
+from flask import Flask
+import threading
+
+app = Flask(__name__)
+
+@app.route('/')
+def health():
+    return "OK - Ticket monitor running"
+
+def run_flask():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port, debug=False, use_reloader=False)
+
+# Start Flask in background thread
+threading.Thread(target=run_flask, daemon=True).start()
