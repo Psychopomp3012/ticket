@@ -2,14 +2,38 @@
 
 An automated Python monitor that continuously checks BookMyShow for T20 ticket availability. When tickets drop, it triggers a multi-channel alarm system including local laptop sirens, Telegram alerts, and ultra-urgent `ntfy` mobile push notifications with a remote kill switch.
 
-## ⚙️ Setup(Linux)
+## Structure:
+.
+├── main.py                  # Entry point & main loop
+├── requirements.txt         # Python dependencies
+├── .env                     # Secrets (Do not commit!)
+├── components/
+│   ├── check_ticket.py      # Core scraping & availability logic
+│   ├── telegram.py          # Telegram bot messaging
+│   ├── laptop_warning.py    # Local system volume & audio control
+│   └── phone_siren.py       # ntfy API for mobile alerts
+└── assets/
+    └── alert.wav            # Siren audio file
 
+## ⚙️ Setup(Linux)
+### Run below sequentially:
 ```bash
 user@machine:~/project$ git clone https://github.com/Psychopomp3012/ticket.git
 user@machine:~/project$ cd ticket
-user@machine:~/project/ticket$ python3 -m venv venv
-user@machine:~/project/ticket$ source venv/bin/activate
-user@machine:~/project/ticket$ pip install -r requirements.txt
+user@machine:~/project/ticket$ python3 -m venv venv # virtual environment so your system does not break
+user@machine:~/project/ticket$ source venv/bin/activate # activate the virtual environment
+user@machine:~/project/ticket$ pip install -r requirements.txt # install dependencies
+```
+
+### Create .env:
+```Ini, TOML
+# Telegram Bot Configuration
+BOT_TOKEN=your_telegram_bot_token
+CHAT_ID=your_telegram_chat_id
+
+# NTFY Push Notification Topics
+TOPIC_ALERT=your_secret_alert_topic
+TOPIC_ACK=your_secret_acknowledgment_topic
 ```
 
 ## Execute:
@@ -25,7 +49,7 @@ user@machine:~/project/ticket$ nohup python t20_monitor.py 2>&1 &  # As a backgr
 user@machine:~/project/ticket$ nohup python t20_monitor.py > log.txt 2>&1 &  # As a background process and log storage as well
 ```
 ### Option - 3: Always-On System Service
-#### Create a file in this path: 
+#### Create a Background service file in this path: 
 
 ```bash
 user@machine:~/project/ticket$ sudo nano /etc/systemd/system/t20-monitor.service
@@ -61,44 +85,19 @@ RestartSec=10
 WantedBy=multi-user.target
 ```
 
-## Requirements in .env:
-```Ini, TOML
-# Telegram Bot Configuration
-BOT_TOKEN=your_telegram_bot_token
-CHAT_ID=your_telegram_chat_id
-
-# NTFY Push Notification Topics
-TOPIC_ALERT=your_secret_alert_topic
-TOPIC_ACK=your_secret_acknowledgment_topic
-```
-
 ## Check the PID running in your local machine:
 ```bash
 user@machine:~/project/ticket$ ps aux | grep main.py 
 ```
 
-## Structure:
+#### Run below sequentially:
+```bash
+user@machine:~/project/ticket$ sudo systemctl daemon-reload  # Reload the systemd manager to read your new file
+user@machine:~/project/ticket$ sudo systemctl enable t20-monitor.service  # Enable it to start automatically on every boot
+user@machine:~/project/ticket$ sudo systemctl start t20-monitor.service  # Start it right now without having to reboot
+```
 
-./components
-    /check_ticket.py => check the availability of ticket 
-    /telegram.py => sends msg to telegram bot 
-    /laptop_warning.py => laptop siren 
-    /phone_siren => ntfy 
-
-./assets 
-    /alert.wav => siren audio 
-
-Background service file: 
-sudo nano /etc/systemd/system/t20-monitor.service
-
-### Reload the systemd manager to read your new file
-sudo systemctl daemon-reload
-
-### Enable it to start automatically on every boot
-sudo systemctl enable t20-monitor.service
-
-### Start it right now without having to reboot
-sudo systemctl start t20-monitor.service
-
-### Moniter: 
-journalctl -u t20-monitor.service -f
+## Moniter the logs: 
+```bash
+user@machine:~/project/ticket$ journalctl -u t20-monitor.service -f
+```
