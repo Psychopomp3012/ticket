@@ -45,16 +45,17 @@ python main.py # direct execution
 ```
 ### Option - 2: As background process
 ```bash
-nohup python t20_monitor.py 2>&1 &  # As a background process
+nohup python main.py 2>&1 &  # As a background process
 ```
 ```bash
-nohup python t20_monitor.py > log.txt 2>&1 &  # As a background process and log storage as well
+nohup python main.py > log.txt 2>&1 &  # As a background process and log storage as well
 ```
-### Option - 3: Always-On System Service
+### Option - 3: Always-On User System Service
 #### Create a Background service file in this path: 
 
 ```bash
-sudo nano /etc/systemd/system/t20-monitor.service
+mkdir -p ~/.config/systemd/user
+nano ~/.config/systemd/user/t20-monitor.service
 ```
 
 #### File content: 
@@ -65,52 +66,46 @@ Description=T20 World Cup Ticket Monitor
 After=network-online.target
 Wants=network-online.target
 # Crucial: Wait for your secondary drive to be mounted
-RequiresMountsFor="/media/sachin/New Volume"
+RequiresMountsFor="/path/to/disk"
 
 [Service]
-# Run as your normal user, not root
-User=your_username
-WorkingDirectory=/path/to/your/project
+WorkingDirectory=/home/your_username/path/to/your/project   # ← full absolute path
+ExecStart=/home/your_username/path/to/your/project/venv/bin/python main.py
 
-# For better loging in journalctl 
+Restart=on-failure
+RestartSec=10
 Environment=PYTHONUNBUFFERED=1
 
-Environment="DISPLAY=:0"
-Environment="XDG_RUNTIME_DIR=/run/user/1000"
-
-# Use the virtual environment's Python to run the script
-ExecStart=/path/to/your/project/venv/bin/python main.py
-Restart=always  # or on-failure
-RestartSec=10
+# Usually NOT needed in user services, but can add if still issues
+Environment=DISPLAY=:0
+Environment=XDG_RUNTIME_DIR=/run/user/1000
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=graphical-session.target
+# or default.target — but graphical-session.target is safer for GUI things
+
 ```
 
 #### Run below sequentially:
 ```bash
-sudo systemctl daemon-reload  # Reload the systemd manager to read your new file
-sudo systemctl enable t20-monitor.service  # Enable it to start automatically on every boot
-sudo systemctl start t20-monitor.service  # Start it right now without having to reboot
+systemctl --user daemon-reload  # Reload the systemd manager to read your new file
+systemctl --user enable t20-monitor.service  # Enable it to start automatically on every boot
+systemctl --user start t20-monitor.service  # Start it right now without having to reboot
 ```
 
-### Moniter the logs: 
+### Monitor the logs: 
 ```bash
-user@machine:~/project/ticket$ journalctl -u t20-monitor.service -f
+journalctl --user -u t20-monitor.service -f
+systemctl --user status t20-monitor.service
 ```
 
 ## Termination
-#### Kill the background process:
-```bash
-ps aux | grep main.py 
-kill -9 <PID>
-```
 #### Kill the Service:
 ```bash
-sudo systemctl stop t20-monitor.service  # Stop the service
-sudo systemctl disable t20-monitor.service  # Disable automatic start on boot
+systemctl --user stop t20-monitor.service  # Stop the service
+systemctl --user disable t20-monitor.service  # Disable automatic start on boot
 ```
-#### To see PID:
+#### Kill the background process | To see PID:
 ```bash
 ps aux | grep main.py 
 kill -9 <PID>
@@ -118,6 +113,12 @@ kill -9 <PID>
 
 ## Restart(if changes made)
 ```bash
-sudo systemctl daemon-reload
-sudo systemctl restart t20-monitor.service
+systemctl --user daemon-reload
+systemctl --user restart t20-monitor.service
+```
+
+## Clear the previous logs
+```bash
+journalctl --user --rotate
+journalctl --user --vacuum-time=1s
 ```

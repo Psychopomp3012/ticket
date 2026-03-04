@@ -52,13 +52,14 @@ def check_ticket(count):
             if len(offers_list) > 0 and match2:
                 print("🎉 Tickets available!")
                 # send_telegram(f"🚨 TICKET AVAILABLE! Book NOW!: {count}")
+                current_run_id = str(int(time.time()))
                 
                 while True:
                     # 1. Trigger the loud laptop audio
                     trigger_laptop_siren()
                     
                     # 2. Send the phone alert with the Kill Switch button
-                    trigger_phone_siren()
+                    trigger_phone_siren(current_run_id)
                     
                     send_telegram(f"🚨 TICKET AVAILABLE! Book NOW!: {count}")
                     
@@ -67,9 +68,9 @@ def check_ticket(count):
                     time.sleep(30)
                     
                     # 4. Check if you pressed the Stop button on your phone
-                    if is_acknowledged():
+                    if is_acknowledged(current_run_id):
                         print("✅ Alarm acknowledged from phone! Shutting down permanently.")
-                        return True  # This completely exits check_ticket() and stops the monitor
+                        return True
                     else:
                         print("❌ Not acknowledged yet. Ringing again!")
                 
