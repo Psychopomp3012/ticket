@@ -2,7 +2,8 @@
 
 An automated Python monitor that continuously checks BookMyShow for T20 ticket availability. When tickets drop, it triggers a multi-channel alarm system including local laptop sirens, Telegram alerts, and ultra-urgent `ntfy` mobile push notifications with a remote kill switch.
 
-## Structure:
+## 🗂️ Structure
+```text
 .
 ├── main.py                  # Entry point & main loop
 ├── requirements.txt         # Python dependencies
@@ -14,15 +15,16 @@ An automated Python monitor that continuously checks BookMyShow for T20 ticket a
 │   └── phone_siren.py       # ntfy API for mobile alerts
 └── assets/
     └── alert.wav            # Siren audio file
+```
 
 ## ⚙️ Setup(Linux)
 ### Run below sequentially:
 ```bash
-user@machine:~/project$ git clone https://github.com/Psychopomp3012/ticket.git
-user@machine:~/project$ cd ticket
-user@machine:~/project/ticket$ python3 -m venv venv # virtual environment so your system does not break
-user@machine:~/project/ticket$ source venv/bin/activate # activate the virtual environment
-user@machine:~/project/ticket$ pip install -r requirements.txt # install dependencies
+git clone https://github.com/Psychopomp3012/ticket.git
+cd ticket
+python3 -m venv venv # virtual environment so your system does not break
+source venv/bin/activate # activate the virtual environment
+pip install -r requirements.txt # install dependencies
 ```
 
 ### Create .env:
@@ -39,20 +41,20 @@ TOPIC_ACK=your_secret_acknowledgment_topic
 ## Execute:
 ### Option - 1: Testing
 ```bash
-user@machine:~/project/ticket$ python main.py # direct execution
+python main.py # direct execution
 ```
 ### Option - 2: As background process
 ```bash
-user@machine:~/project/ticket$ nohup python t20_monitor.py 2>&1 &  # As a background process
+nohup python t20_monitor.py 2>&1 &  # As a background process
 ```
 ```bash
-user@machine:~/project/ticket$ nohup python t20_monitor.py > log.txt 2>&1 &  # As a background process and log storage as well
+nohup python t20_monitor.py > log.txt 2>&1 &  # As a background process and log storage as well
 ```
 ### Option - 3: Always-On System Service
 #### Create a Background service file in this path: 
 
 ```bash
-user@machine:~/project/ticket$ sudo nano /etc/systemd/system/t20-monitor.service
+sudo nano /etc/systemd/system/t20-monitor.service
 ```
 
 #### File content: 
@@ -85,19 +87,31 @@ RestartSec=10
 WantedBy=multi-user.target
 ```
 
-## Check the PID running in your local machine:
-```bash
-user@machine:~/project/ticket$ ps aux | grep main.py 
-```
-
 #### Run below sequentially:
 ```bash
-user@machine:~/project/ticket$ sudo systemctl daemon-reload  # Reload the systemd manager to read your new file
-user@machine:~/project/ticket$ sudo systemctl enable t20-monitor.service  # Enable it to start automatically on every boot
-user@machine:~/project/ticket$ sudo systemctl start t20-monitor.service  # Start it right now without having to reboot
+sudo systemctl daemon-reload  # Reload the systemd manager to read your new file
+sudo systemctl enable t20-monitor.service  # Enable it to start automatically on every boot
+sudo systemctl start t20-monitor.service  # Start it right now without having to reboot
 ```
 
 ## Moniter the logs: 
 ```bash
 user@machine:~/project/ticket$ journalctl -u t20-monitor.service -f
+```
+
+## Termination
+### Kill the background process:
+```bash
+ps aux | grep main.py 
+kill -9 <PID>
+```
+### Kill the Service:
+```bash
+sudo systemctl stop t20-monitor.service  # Stop the service
+sudo systemctl disable t20-monitor.service  # Disable automatic start on boot
+```
+### To see PID:
+```bash
+ps aux | grep main.py 
+kill -9 <PID>
 ```
