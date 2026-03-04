@@ -19,8 +19,8 @@ while True:
     print(f"Sleeping {CHECK_INTERVAL} seconds...\n")
     
     if count % 10 == 0:
-        print(f"{count} Checks Done")
-        send_telegram(f"{count} Checks Done")
+        print(f"Health Report: {count} Checks Done")
+        send_telegram(f"Health Report: {count} Checks Done")
         
     count += 1
     time.sleep(CHECK_INTERVAL)
