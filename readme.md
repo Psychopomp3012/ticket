@@ -115,3 +115,9 @@ sudo systemctl disable t20-monitor.service  # Disable automatic start on boot
 ps aux | grep main.py 
 kill -9 <PID>
 ```
+
+## Restart(if changes made)
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart t20-monitor.service
+```
