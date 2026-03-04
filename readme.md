@@ -1,30 +1,23 @@
-selenium
-webdriver_manager
-bs4
-plyer
-pip install undetected-chromedriver selenium beautifulsoup4 setuptools
-sudo apt update
-sudo apt install -y chromium chromium-driver
-pip install cloudscraper
+## Requirements in .env:
+BOT_TOKEN
+CHAT_ID
 
-git add Dockerfile readme.md requirements.txt t20_moniter.py
-pip install python-dotenv
-
-Nakshatra | Navi3012_bot: "8689774088:AAFAQtVNl3omAmiTnOielzSZNHAQkWyJk9I"
-TELEGRAM_CHAT_ID: 2059171998
+TOPIC_ALERT
+TOPIC_ACK
 
 RUN: nohup python t20_monitor.py > log.txt 2>&1 &
 
-Organic(user-like): t20_tickets_notifier.py
-Current solution: test.py
-
 Look for PID : ps aux | grep test.py
 
+./components
+    /check_ticket.py => check the availability of ticket
+    /telegram.py => sends msg to telegram bot
+    /laptop_warning.py => laptop siren
+    /phone_siren => ntfy
 
-./componentas/telegram.py => sends msg to telegram bot
-
-Background service:
+Background service file:
 sudo nano /etc/systemd/system/t20-monitor.service
+
 # Reload the systemd manager to read your new file
 sudo systemctl daemon-reload
 
