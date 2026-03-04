@@ -9,8 +9,9 @@ from components.phone_siren import trigger_phone_siren
 from components.phone_siren import is_acknowledged
 from components.laptop_warning import trigger_laptop_siren
 
-url = "https://in.bookmyshow.com/sports/icc-men-s-t20-world-cup-2026-semi-final-2/ET00474271"
-# url = "https://in.bookmyshow.com/sports/icc-men-s-t20-world-cup-2026-semi-final-1-kolkata/ET00483392"
+# url = "https://in.bookmyshow.com/sports/icc-men-s-t20-world-cup-2026-semi-final-2/ET00474271"
+# url = "https://in.bookmyshow.com/sports/icc-men-s-t20-world-cup-2026-final/ET00476187"
+url = "https://in.bookmyshow.com/sports/chess-chai-connect/ET00358311"
 
 headers = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
@@ -38,9 +39,7 @@ def check_ticket(count):
             match = re.search(r'"offers"\s*:\s*(\[[\s\S]*?\])', text)
             # 2nd
             keyword_pattern = r'(' + '|'.join(AVAILABLE_KEYWORDS) + r')'
-            # match2 = re.search(keyword_pattern, text, re.IGNORECASE)
-            
-            match2 = True
+            match2 = re.search(keyword_pattern, text, re.IGNORECASE)
             
             if not match:
                 print("Offers block not found")
