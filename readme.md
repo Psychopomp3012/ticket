@@ -94,23 +94,23 @@ sudo systemctl enable t20-monitor.service  # Enable it to start automatically on
 sudo systemctl start t20-monitor.service  # Start it right now without having to reboot
 ```
 
-## Moniter the logs: 
+### Moniter the logs: 
 ```bash
 user@machine:~/project/ticket$ journalctl -u t20-monitor.service -f
 ```
 
 ## Termination
-### Kill the background process:
+#### Kill the background process:
 ```bash
 ps aux | grep main.py 
 kill -9 <PID>
 ```
-### Kill the Service:
+#### Kill the Service:
 ```bash
 sudo systemctl stop t20-monitor.service  # Stop the service
 sudo systemctl disable t20-monitor.service  # Disable automatic start on boot
 ```
-### To see PID:
+#### To see PID:
 ```bash
 ps aux | grep main.py 
 kill -9 <PID>
