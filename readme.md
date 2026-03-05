@@ -1,4 +1,4 @@
-# 🏏 T20 Ticket Sniper
+# 🎟️ BookMyShow Ticket Sniper
 
 An automated Python monitor that continuously checks BookMyShow for T20 ticket availability. When tickets drop, it triggers a multi-channel alarm system including local laptop sirens, Telegram alerts, and ultra-urgent `ntfy` mobile push notifications with a remote kill switch.
 
@@ -27,7 +27,7 @@ source venv/bin/activate # activate the virtual environment
 pip install -r requirements.txt # install dependencies
 ```
 
-### Create .env:
+### 🔐 Create .env:
 ```Ini, TOML
 # Telegram Bot Configuration
 BOT_TOKEN=your_telegram_bot_token
@@ -38,7 +38,7 @@ TOPIC_ALERT=your_secret_alert_topic
 TOPIC_ACK=your_secret_acknowledgment_topic
 ```
 
-## Execute:
+## 🚀 Execute:
 ### Option - 1: Testing
 ```bash
 python main.py # direct execution
@@ -93,13 +93,13 @@ systemctl --user enable t20-monitor.service  # Enable it to start automatically 
 systemctl --user start t20-monitor.service  # Start it right now without having to reboot
 ```
 
-### Monitor the logs: 
+### 🔍 Monitor the logs: 
 ```bash
 journalctl --user -u t20-monitor.service -f
 systemctl --user status t20-monitor.service
 ```
 
-## Termination
+## 🛑 Termination
 #### Kill the Service:
 ```bash
 systemctl --user stop t20-monitor.service  # Stop the service
