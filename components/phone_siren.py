@@ -7,7 +7,7 @@ load_dotenv()
 TOPIC_ALERT = os.getenv("TOPIC_ALERT") # Laptop => cell phone
 TOPIC_ACK = os.getenv("TOPIC_ACK") # Cell phone => Laptop'
 
-def trigger_phone_siren(run_id):
+def trigger_phone_siren(run_id: str):
     """Sends the alert with a unique kill-switch ID."""
     url = "https://ntfy.sh/"
     
@@ -41,7 +41,7 @@ def trigger_phone_siren(run_id):
     except Exception as e:
         print(f"[Phone Alert Error] {e}")
         
-def is_acknowledged(run_id: str):
+def is_acknowledged(run_id: str) -> bool:
     """Checks if the phone sent back this specific run_id."""
     try:
         url = f"https://ntfy.sh/{TOPIC_ACK}/json?poll=1&since=50s"
