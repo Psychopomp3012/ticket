@@ -6,9 +6,6 @@ from typing import Literal
 # def check_ticket(url: str, count: int) -> Literal["coming_soon", "sold_out"]:
 
 from components.telegram import send_telegram
-from components.phone_siren import trigger_phone_siren
-from components.phone_siren import is_acknowledged
-from components.laptop_warning import trigger_laptop_siren
 
 headers = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
@@ -18,7 +15,7 @@ headers = {
     # "Cookie": "cf_clearance=YOUR_VALID_COOKIE_HERE; rgn=%7B%22regionCode%22%3A%22KOLK%22%7D;" 
 }
 
-def get_status(url:str) -> Literal["coming_soon", "available", "sold_out", "unknown"]:
+def get_status(url:str) -> Literal["coming_soon", "available", "sold_out", "closed", "unknown"]:
     """Return the status
     coming_soon | available | sold_out | unknown
     
@@ -30,7 +27,7 @@ def get_status(url:str) -> Literal["coming_soon", "available", "sold_out", "unkn
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         if response.status_code == 200:
-            print(f"[{now}] Request success - 125")
+            print(f"[{now}] Request success - 126")
 
             text = response.text
 
@@ -60,6 +57,9 @@ def get_status(url:str) -> Literal["coming_soon", "available", "sold_out", "unkn
             elif match1 == "coming_soon":
                 return "coming_soon"
             
+            elif match1 == "closed":
+                return "closed"
+            
             else:
                 print(f"Unknown case in check_ticket() | match1: {match1}")
                 return "unknown"
@@ -79,3 +79,5 @@ def get_status(url:str) -> Literal["coming_soon", "available", "sold_out", "unkn
         print(f"[ERROR] {e}")
         return "unknown"
 
+
+get_status("https://in.bookmyshow.com/sports/icc-men-s-t20-world-cup-2026-semi-final-2/ET00474271")

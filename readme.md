@@ -33,10 +33,28 @@ pip install -r requirements.txt # install dependencies
 BOT_TOKEN=your_telegram_bot_token
 CHAT_ID=your_telegram_chat_id
 
-# NTFY Push Notification Topics
+# NTFY Push Notification Topics (Optional)
 TOPIC_ALERT=your_secret_alert_topic
 TOPIC_ACK=your_secret_acknowledgment_topic
 ```
+
+### Telegram Integration (Optional)
+1. Message: `@BotFather`
+```telegram
+/newbot
+```
+2. Message the <BOT_NAME> and <BOT_USERNAME> 
+3. Copy the HTTP API token and set as `BOT_TOKEN` in `.env`
+4. Search for your bot in telegram by <BOT_NAME> and send a "Hello" text
+5. In a browser run:
+`https://api.telegram.org/bot<BOT_TOKEN>/getUpdates`
+6. Copy `id` and set as `CHAT_ID` in `.env`
+
+### Mobile Remote Control (Optional)
+1. Install ntfy (playstore): `https://play.google.com/store/apps/details?id=io.heckel.ntfy`
+2. Create two topics UNIQIE and hard to guess (e.g., myticket_alert_9jsyw5s and myticket_ack_9jsyw5s).
+3. Add these names to` TOPIC_ALERT` and `TOPIC_ACK` in `.env`
+4. When a notification is received acknowledging it by clicking `Stop Now` will remove that event from being checked
 
 ## 🚀 Execute:
 ### Option - 1: Testing

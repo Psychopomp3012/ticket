@@ -74,7 +74,15 @@ while True:
             
             pass
         elif status == "sold_out":
-            msg = f"All tickets of this event are sold\n Event name: {event['name']}"
+            msg = f"All tickets of this event are sold\nEvent name: {event['name']}"
+            # log - laptop
+            print(msg)
+            # log - cell phone
+            send_telegram(msg)
+            # No point in checking anymore
+            event["enabled"] = False
+        elif status == "closed":
+            msg = f"Event Closed\nEvent name: {event['name']}"
             # log - laptop
             print(msg)
             # log - cell phone
