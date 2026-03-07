@@ -74,7 +74,7 @@ while True:
             
             pass
         elif status == "sold_out":
-            msg = f"All tickets of this event are sold\nEvent name: {event['name']}"
+            msg = f"🔴 Sold out\n🎫 Event name: {event['name']}"
             # log - laptop
             print(msg)
             # log - cell phone
@@ -82,7 +82,7 @@ while True:
             # No point in checking anymore
             event["enabled"] = False
         elif status == "closed":
-            msg = f"Event Closed\nEvent name: {event['name']}"
+            msg = f"🚫 Event Closed\n🎫 Event name: {event['name']}"
             # log - laptop
             print(msg)
             # log - cell phone
@@ -104,7 +104,7 @@ while True:
             send_telegram("🏁 All targets cleared. Monitor is offline.")
             break
         
-        health_msg = f"Health Report: Cycle {count} Done. {active_targets} targets still active."
+        health_msg = f"🖥️ Health Report:\n⚙️ Cycle {count} Done.\n🎯 {active_targets} targets still active."
         print(health_msg)
         send_telegram(health_msg)
         

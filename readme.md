@@ -38,7 +38,7 @@ TOPIC_ALERT=your_secret_alert_topic
 TOPIC_ACK=your_secret_acknowledgment_topic
 ```
 
-### Telegram Integration (Optional)
+### 🤖 Telegram Integration (Optional)
 1. Message: `@BotFather`
 ```telegram
 /newbot
@@ -50,10 +50,10 @@ TOPIC_ACK=your_secret_acknowledgment_topic
 `https://api.telegram.org/bot<BOT_TOKEN>/getUpdates`
 6. Copy `id` and set as `CHAT_ID` in `.env`
 
-### Mobile Remote Control (Optional)
+### 📱 Mobile Remote Control (Optional)
 1. Install ntfy (playstore): `https://play.google.com/store/apps/details?id=io.heckel.ntfy`
 2. Create two topics UNIQIE and hard to guess (e.g., myticket_alert_9jsyw5s and myticket_ack_9jsyw5s).
-3. Add these names to` TOPIC_ALERT` and `TOPIC_ACK` in `.env`
+3. Add these names to`TOPIC_ALERT` and `TOPIC_ACK` in `.env`
 4. When a notification is received acknowledging it by clicking `Stop Now` will remove that event from being checked
 
 ## 🚀 Execute:
